@@ -1,46 +1,46 @@
 name: Compilar APK ShazamRepara
-
+ 
 on:
   workflow_dispatch:
   push:
     branches: [ main, master ]
-
+ 
 permissions:
   contents: write
-
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar código
         uses: actions/checkout@v4
-
+ 
       - name: Configurar Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-
+ 
       - name: Configurar Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-
+ 
       - name: Compilar APK debug
-        run: gradle assembleDebug --no-daemon --stacktrace
-
+        run: gradle assembleDebug --no-daemon
+ 
       - name: Renombrar APK
         run: |
           mkdir -p salida
           cp app/build/outputs/apk/debug/app-debug.apk "salida/bencina-barata-build-${{ github.run_number }}.apk"
-
+ 
       - name: Publicar APK como artefacto
         uses: actions/upload-artifact@v4
         with:
           name: bencina-barata-apk
           path: salida/*.apk
           if-no-files-found: error
-
+ 
       - name: Publicar APK como Release (descarga directa)
         uses: softprops/action-gh-release@v2
         with:
