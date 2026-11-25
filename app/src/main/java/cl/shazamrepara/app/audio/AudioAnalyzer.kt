@@ -109,19 +109,27 @@ object AudioAnalyzer {
         val golpeteo = (transientRate * 2.4).coerceIn(0.0, 1.0) * if (dominant < 320.0) 1.0 else 0.6
         if (golpeteo > 0.25) symptoms[Symptom.GOLPETEO] = golpeteo.toFloat()
 
-        val chirrido = (highRatio * 1.7 + if (dominant in 1500.0..6500.0) 0.35 else 0.0)
-            .coerceIn(0.0, 1.0)
+        // Un chirrido (pastilla, correa) es un tono estrecho y agudo. El ruido de un
+        // motor o de un electrodoméstico normal reparte su energía en muchas
+        // frecuencias, así que sin pico tonal no se marca chirrido.
+        val tonoAgudo = peakiness > 8.0 && dominant in 1200.0..3200.0
+        val chirrido = if (tonoAgudo) (0.45 + highRatio).coerceIn(0.0, 1.0) else 0.0
         if (chirrido > 0.3) symptoms[Symptom.CHIRRIDO] = chirrido.toFloat()
 
-        if (lowRatio > 0.45 && dominant < 220.0) {
+        // Un zumbido de rodamiento es un tono casi puro; el motor, aunque tenga su
+        // frecuencia dominante en la misma zona, siempre trae su segundo armónico.
+        val domBinMag = spectrum[domBin] / frames
+        val secondHarmonic = spectrum.getOrNull(domBin * 2)?.div(frames) ?: 0.0
+        val pureTone = secondHarmonic < domBinMag * 0.35
+        if (lowRatio > 0.45 && dominant in 80.0..320.0 && pureTone) {
             symptoms[Symptom.ZUMBIDO] = (lowRatio * 1.5).coerceIn(0.0, 1.0).toFloat()
         }
 
-        if (peakiness > 12.0 && dominant > 1200.0 && highRatio > 0.15) {
+        if (peakiness > 12.0 && dominant in 3500.0..8000.0 && highRatio > 0.15) {
             symptoms[Symptom.SILBIDO] = 0.75f
         }
 
-        if (crest > 3.5 && highRatio > 0.2) {
+        if (crest > 3.5 && highRatio > 0.2 && peakiness > 3.0 && transientRate > 0.04) {
             symptoms[Symptom.RUIDO_METALICO] = ((crest - 3.0) / 4.0).coerceIn(0.0, 1.0).toFloat()
         }
 

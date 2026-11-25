@@ -1,19 +1,10 @@
 package cl.shazamrepara.app.data
 
 enum class EquipmentType(val label: String, val hint: String) {
-    AUTO("Auto / camioneta", "motor, frenos, dirección, bomba de agua"),
-    LAVADORA("Lavadora", "carga superior o frontal"),
-    REFRIGERADOR("Refrigerador", "no frost o convencional"),
-    SECADORA("Secadora de ropa", "a tambor"),
-    LAVAVAJILLAS("Lavavajillas", "lava loza"),
-    AIRE("Aire acondicionado", "split o de ventana"),
-    MICROONDAS("Microondas", "horno de microondas"),
-    CALEFON("Calefón / termo eléctrico", "agua caliente sanitaria"),
-    ASPIRADORA("Aspiradora", "doméstica"),
-    OTRO("Otro equipo del hogar", "ventilador, bomba, etc.");
+    AUTO("Motor de auto o camioneta", "bencina, diésel o GLP");
 
     companion object {
-        fun fromName(name: String?): EquipmentType = values().firstOrNull { it.name == name } ?: OTRO
+        fun fromName(name: String?): EquipmentType = values().firstOrNull { it.name == name } ?: AUTO
     }
 }
 
@@ -21,17 +12,17 @@ enum class SafetyLevel(val label: String, val rank: Int, val advice: String) {
     SEGURO(
         "Seguro",
         0,
-        "Puedes seguir usando el equipo mientras planificas la reparación."
+        "Puedes seguir andando con normalidad mientras planificas la reparación."
     ),
     PRECAUCION(
         "Precaución",
         1,
-        "Úsalo solo lo necesario hasta repararlo. Evita cargas altas, no lo dejes funcionando sin supervisión."
+        "Anda solo lo necesario y sin exigir el motor hasta repararlo; vigila la temperatura y los ruidos."
     ),
     PELIGRO(
         "Peligro",
         2,
-        "Deja de usarlo ahora. Desconéctalo de la red eléctrica y, si hay olor a quemado o humo, corta la energía desde el automático."
+        "No sigas andando. Apaga el motor en un lugar seguro y llama a una grúa: forzar un motor sobrecalentado puede costar el motor completo."
     )
 }
 
@@ -40,20 +31,20 @@ enum class Difficulty(val label: String, val detail: String) {
     MEDIA("Intermedia", "Requiere herramientas o algo de experiencia; si dudas, llama a un técnico."),
     ESPECIALISTA(
         "Solo especialista",
-        "Requiere técnico con herramientas y certificación. No lo intentes tú: hay riesgo eléctrico, de gas o de daño mayor."
+        "Requiere mecánico con herramientas y escáner. No lo intentes tú: hay riesgo de daño mayor al motor."
     )
 }
 
 enum class VisualSign(val label: String) {
-    FUGA_AGUA("Fuga de agua"),
-    FUGA_ACEITE("Fuga de aceite o refrigerante"),
-    CABLE_QUEMADO("Cable o enchufe quemado"),
-    OLOR_QUEMADO("Olor a quemado"),
+    FUGA_AGUA("Líquido verde o rosado bajo el auto"),
+    FUGA_ACEITE("Mancha de aceite o refrigerante"),
+    CABLE_QUEMADO("Cable o fusible quemado"),
+    OLOR_QUEMADO("Olor a quemado o a goma"),
     OXIDO("Óxido o corrosión"),
-    HUMO("Humo o chispas"),
-    PIEZA_SUELTA("Pieza suelta o golpeada"),
+    HUMO("Humo o vapor en el motor"),
+    PIEZA_SUELTA("Pieza o tapa suelta"),
     GOLPE("Golpe o abolladura"),
-    PANTALLA_ERROR("Código de error en pantalla"),
+    PANTALLA_ERROR("Luz de check engine encendida"),
     NO_HAY_SENALES("Sin señales visibles")
 }
 

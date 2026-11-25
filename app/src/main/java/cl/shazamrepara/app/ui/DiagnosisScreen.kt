@@ -67,14 +67,13 @@ fun DiagnosisScreen() {
     val scope = rememberCoroutineScope()
     val mainHandler = remember { Handler(Looper.getMainLooper()) }
 
-    var equipment by remember { mutableStateOf(EquipmentType.AUTO) }
     var signs by remember { mutableStateOf(setOf<VisualSign>()) }
     var status by remember { mutableStateOf<ScanStatus>(ScanStatus.Idle) }
 
     fun scan(withAudio: Boolean) {
         scope.launch {
             status = ScanStatus.Running("Preparando sensores…", 0f)
-            status = performScan(context, equipment, signs, withAudio) { phase, progress ->
+            status = performScan(context, EquipmentType.AUTO, signs, withAudio) { phase, progress ->
                 // Los avisos de progreso llegan desde hilos de grabación y pueden
                 // ejecutarse después de que el escaneo ya terminó: si el estado
                 // dejó de ser Running, se ignoran para no tapar el resultado.
@@ -117,35 +116,14 @@ fun DiagnosisScreen() {
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = "Diagnóstico de fallas de autos y electrodomésticos",
+            text = "Diagnóstico del motor del auto",
             style = MaterialTheme.typography.bodyMedium
         )
 
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "1. Elige el equipo",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth()
-        )
-        EquipmentType.values().forEach { type ->
-            FilterChip(
-                selected = equipment == type,
-                onClick = {
-                    equipment = type
-                    if (!running) status = ScanStatus.Idle
-                },
-                enabled = !running,
-                label = { Text(type.label) },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = "2. Marca lo que ves (opcional)",
+            text = "1. Marca lo que ves (opcional)",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()
@@ -171,9 +149,9 @@ fun DiagnosisScreen() {
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "3. Graba con el equipo encendido. Primero apoya el teléfono sobre él " +
-                "(${VIBRATION_SECONDS} s de vibración) y después acerca el micrófono al ruido " +
-                "(${AUDIO_SECONDS} s de audio).",
+            text = "2. Graba con el motor encendido y el capó abierto. Primero apoya el teléfono " +
+                "sobre la carrocería (${VIBRATION_SECONDS} s de vibración) y después acerca el " +
+                "micrófono al motor (${AUDIO_SECONDS} s de audio).",
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.fillMaxWidth()
         )

@@ -1,37 +1,24 @@
 # Shazam Repara
 
-App Android que usa **audio, vibraciones y cámara** para diagnosticar fallas mecánicas y eléctricas en electrodomésticos y del hogar. Identifica el repuesto exacto, avisa si es seguro seguir usándolo, indica costo estimado transparente y si requiere técnico especialista.
+Simulador de sonido de **motor de auto** con fallas inyectables y diagnóstico automático del sonido. Eliges un motor, lo enciendes, aceleras y activas fallas (correa, rodamiento, inyector, fuga de vacío); la app analiza el mismo sonido que estás oyendo y te dice qué falla es, con probabilidad, repuesto y costo estimado en pesos chilenos.
+
+Todo el sonido se **sintetiza en el teléfono**: no hay archivos de audio, ni descargas, ni compras dentro de la app.
 
 ## Qué hace
 
-- **Escaneo por audio**: Graba 10–15 segundos con el micrófono y analiza patrones de ruido (chirrido, zumbido, golpeteo, silbido, metalizado, ruido agudo) para asociarlos a síntomas conocidos.
-- **Escaneo por vibraciones**: Usa el acelerómetro del teléfono mientras apoyas el equipo; detecta vibración, golpeteo, zumbido y ruidos metálicos.
-- **Identificación visual (cámara)**: El usuario señala señales visibles (fuga de agua, cable quemado, óxido, pieza suelta, etc.) tocando los íconos en pantalla.
-- **Diagnóstico**: Motor que combina las tres fuentes de señal y devuelve:
-  - La falla más probable con probabilidad (%).
-  - Nivel de seguridad: **Seguro / Precaución / Peligro**.
-  - Costo estimado de repuesto y mano de obra (en pesos chilenos, referencias de mercado 2025‑2026).
-  - Dificultad: **Simple / Intermedia / Solo especialista**.
-  - Motivo técnico y pasos de verificación.
-  - Consejos para evitar estafas (pedir presupuesto por escrito, ver la pieza, comparar al menos dos presupuestos, exigir garantía escrita).
+- **Motores simulados**: 4 cilindros bencina, V8 americano, diésel 1.9 y deportivo turbo, cada uno con su ralentí, régimen máximo y timbre propio.
+- **Pedal de acelerador**: mantén presionado para subir las RPM; el motor responde con inercia y muestra las revoluciones en pantalla.
+- **Fallas simuladas**: correa de accesorios patinando (chirrido agudo), rodamiento de alternador (zumbido grave), inyector sucio (cascabeleo irregular) y fuga de vacío en la admisión (silbido).
+- **Diagnóstico del sonido**: analiza los últimos 5 segundos con FFT (frecuencia dominante, bandas, picos tonales, transitorios) y consulta el catálogo de fallas del motor.
+- **Resultado**: causa más probable y probabilidad, nivel de seguridad (**Seguro / Precaución / Peligro**), repuesto exacto, costo estimado de repuesto y mano de obra, motivo técnico, otras causas posibles y qué revisar.
 
 ## Flujo de uso
 
-1. **Abre la app** y selecciona el tipo de equipo (Auto, Lavadora, Refrigerador, Aire, Microondas, Calefón, Lavavajillas, Aspiradora u Otro).
-2. **Apoya el teléfono** sobre el equipo (o en la zona del motor/soporte) y pulsa **Grabar vibración** (10 seg aprox).
-3. **Graba audio** apuntando el micrófono al ruido que hace el equipo (mismos 10 seg).
-4. **Marca señales visuales** si ves fuga de agua, cable quemado, óxido, pieza suelta, etc.
-5. **Resultados al instante**: la app muestra la falla principal, probabilidad, nivel de seguridad, costo estimado y si es una reparación simple o requiere técnico.
-6. **Guarda en historial** (opcional) para consultar later o compartir con otro taller.
-
-## Capturas de pantalla (en dispositivo)
-
-| Pantalla | Descripción |
-|---|---|
-| **Inicio** | Lista de equipos para elegir. |
-| **Escaneo** | Indicador de progreso mientras se graba audio y vibración. |
-| **Resultado** | Falla principal, probabilidad, nivel de seguridad, costo estimado y dificultad. |
-| **Historial** | Lista de diagnósticos previos (se guardan localmente en el teléfono). |
+1. Elige el motor.
+2. Pulsa **Encender motor** (suena en ralentí).
+3. Mantén presionado el pedal para acelerar.
+4. Marca una o más fallas para escuchar cómo cambia el sonido.
+5. Pulsa **Diagnosticar este sonido** y revisa el resultado.
 
 ## Cómo obtener el APK
 
@@ -56,13 +43,13 @@ Si el repo está en GitHub y el workflow ya corrió, la APK aparece como Release
 ## Requisitos técnicos
 
 - `minSdk 26` (Android 8.0), `targetSdk 35`, Kotlin 2.0, Jetpack Compose (Material 3).
-- Permisos: `INTERNET`, `RECORD_AUDIO`, `ACCESS_FINE_LOCATION` (opcional, para futuras funciones), `ACCESS_COARSE_LOCATION` (opcional), sensores y cámara (uso opcional en diagnóstico).
+- Sin permisos especiales: la app solo reproduce audio.
 - Sin dependencias de terceros más allá de AndroidX.
 - La base de datos de fallas está empaquetada en la app; todo el procesamiento es **offline** y no requiere internet después de la instalación.
 
 ## Nota sobre este entorno
 
-Este proyecto se generó en una máquina sin JDK, ni Android SDK ni shell, así que **aquí no se pudo compilar ni ejecutar**. El código está escrito contra las APIs estables de Compose Material 3 y AndroidX; la compilación debe hacerse con alguna de las tres opciones de arriba.
+Este proyecto se generó en una máquina sin JDK, ni Android SDK ni shell, así que **aquí no se pudo compilar ni ejecutar**. El código está escrito contra las APIs estables de Compose Material 3 y AndroidX; la compilación debe hacerse con alguna de las opciones de arriba.
 
 ## Licencia
 
