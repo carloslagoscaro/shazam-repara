@@ -32,12 +32,12 @@ jobs:
       - name: Renombrar APK
         run: |
           mkdir -p salida
-          cp app/build/outputs/apk/debug/app-debug.apk "salida/bencina-barata-build-${{ github.run_number }}.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "salida/shazam-repara-build-${{ github.run_number }}.apk"
  
       - name: Publicar APK como artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: bencina-barata-apk
+          name: shazam-repara-apk
           path: salida/*.apk
           if-no-files-found: error
  

@@ -8,9 +8,13 @@ import kotlin.math.max
 
 class AudioRecorder {
 
+    companion object {
+        const val SAMPLE_RATE = 44100
+    }
+
     @SuppressLint("MissingPermission")
     fun record(seconds: Int, onProgress: (Float) -> Unit): ShortArray? {
-        val sampleRate = 44100
+        val sampleRate = SAMPLE_RATE
         val minBuffer = AudioRecord.getMinBufferSize(
             sampleRate,
             AudioFormat.CHANNEL_IN_MONO,
