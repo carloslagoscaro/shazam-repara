@@ -75,7 +75,14 @@ fun DiagnosisScreen() {
         scope.launch {
             status = ScanStatus.Running("Preparando sensores…", 0f)
             status = performScan(context, equipment, signs, withAudio) { phase, progress ->
-                mainHandler.post { status = ScanStatus.Running(phase, progress) }
+                // Los avisos de progreso llegan desde hilos de grabación y pueden
+                // ejecutarse después de que el escaneo ya terminó: si el estado
+                // dejó de ser Running, se ignoran para no tapar el resultado.
+                mainHandler.post {
+                    if (status is ScanStatus.Running) {
+                        status = ScanStatus.Running(phase, progress)
+                    }
+                }
             }
         }
     }
